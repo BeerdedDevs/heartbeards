@@ -6,14 +6,14 @@ const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
-//
 
 /**
  * Triggers when a user uploads a new beard picture
  */
-exports.sendFollowerNotification = functions.database.ref('/timeline').onWrite(event => {
-  const followerUid = event.params.followerUid;
-  const followedUid = event.params.followedUid;
+exports.sendNewBeardUploadedNotification = functions.database.ref('/timeline/{id}').onCreate(event => {
+  const timelineId = event.params.id;
+  const data = event.data.val();
+  console.log(data);
 
   console.log('A new picture was uploaded');
 
@@ -21,30 +21,28 @@ exports.sendFollowerNotification = functions.database.ref('/timeline').onWrite(e
   const getDeviceTokensPromise = admin.database().ref(`/notificationTokens`).once('value');
 
   // Get the follower profile.
-  const beardUploaderPromise = admin.auth().getUser(followerUid);
+  const beardUploader = data.name
 
-  return Promise.all([getDeviceTokensPromise, beardUploaderPromise]).then(results => {
-    const tokensSnapshot = results[0];
-    const beardUploader = results[1];
-
+  return getDeviceTokensPromise.then(tokenSnapshot => {
+    console.log(tokenSnapshot)
     // Check if there are any device tokens.
-    if (!tokensSnapshot.hasChildren()) {
-      return console.log('There are no notification tokens to send to.');
+    if (!tokenSnapshot.hasChildren()) {
+      console.log('There are no notification tokens to send to.');
+      return Promise.reject();
     }
-    console.log('There are', tokensSnapshot.numChildren(), 'tokens to send notifications to.');
+    console.log('There are', tokenSnapshot.numChildren(), 'tokens to send notifications to.');
     console.log('Fetched beard uploader profile', beardUploader);
 
     // Notification details.
     const payload = {
       notification: {
         title: 'A new beard was just uploaded!',
-        body: `${beardUploader.displayName} uploaded a new sexy beard pic. Check it out!`,
-        icon: follower.photoURL
+        body: `${beardUploader} uploaded a new sexy beard pic. Check it out!`
       }
     };
 
     // Listing all tokens.
-    const tokens = Object.keys(tokensSnapshot.val());
+    const tokens = Object.keys(tokenSnapshot.val());
 
     // Send notifications to all tokens.
     return admin.messaging().sendToDevice(tokens, payload).then(response => {
@@ -53,11 +51,11 @@ exports.sendFollowerNotification = functions.database.ref('/timeline').onWrite(e
       response.results.forEach((result, index) => {
         const error = result.error;
         if (error) {
-          console.error('Failure sending notification to', tokens[index], error);
+          console.warn('Failure sending notification to', tokens[index], error);
           // Cleanup the tokens who are not registered anymore.
           if (error.code === 'messaging/invalid-registration-token' ||
               error.code === 'messaging/registration-token-not-registered') {
-            tokensToRemove.push(tokensSnapshot.ref.child(tokens[index]).remove());
+            tokensToRemove.push(tokenSnapshot.ref.child(tokens[index]).remove());
           }
         }
       });
