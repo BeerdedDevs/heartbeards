@@ -21,9 +21,7 @@ class TimelineAdapter(context: Context, options: FirebaseRecyclerOptions<Timelin
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, model: TimelineItem) {
         holder.nameTextView.text = model.name
-        picasso.load(model.imageUrl)
-                .rotate(-90f)
-            .into(holder.beardImageView)
+        picasso.load(model.imageUrl).rotate(-90f).into(holder.beardImageView)
         holder.favIcon.setOnClickListener {
             holder.favIcon.setImageResource(R.drawable.ic_fav_full)
         }
