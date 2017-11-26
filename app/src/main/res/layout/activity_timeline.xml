@@ -9,15 +9,16 @@
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp" />
+        android:clipToPadding="false"
+        android:padding="8dp"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/addImageFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/content_margin"
-        android:src="@drawable/ic_check"
+        android:src="@drawable/ic_add"
         app:layout_anchor="@id/recycler"
-        app:layout_anchorGravity="bottom|right|end" />
+        app:layout_anchorGravity="bottom|end" />
 
 </android.support.design.widget.CoordinatorLayout>
