@@ -12,11 +12,11 @@ import android.view.MenuItem
 import butterknife.ButterKnife
 import butterknife.OnClick
 import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import io.beerdeddevs.heartbeards.R
 import io.beerdeddevs.heartbeards.feature.picture.choose.BottomSheetChoosePicture
 import io.beerdeddevs.heartbeards.feature.signup.welcome.WelcomeActivity
-import com.firebase.ui.database.FirebaseRecyclerOptions
 import io.beerdeddevs.heartbeards.timelineReference
 
 const val REQUEST_CODE_SIGN_IN = 111
@@ -24,6 +24,7 @@ const val REQUEST_CODE_SIGN_IN = 111
 class TimelineActivity : AppCompatActivity() {
 
     private lateinit var adapter: TimelineAdapter
+    private var logoutMenuItem: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +42,8 @@ class TimelineActivity : AppCompatActivity() {
         }
     }
 
-    @OnClick(R.id.addImageFab) fun addImageFabClicked() {
+    @OnClick(R.id.addImageFab)
+    fun addImageFabClicked() {
         if (FirebaseAuth.getInstance().currentUser == null) {
             startActivityForResult(Intent(this@TimelineActivity, WelcomeActivity::class.java),
                     REQUEST_CODE_SIGN_IN)
@@ -65,6 +67,7 @@ class TimelineActivity : AppCompatActivity() {
 
         if (requestCode == REQUEST_CODE_SIGN_IN && resultCode == Activity.RESULT_OK) {
             BottomSheetChoosePicture().show(this@TimelineActivity)
+            logoutMenuItem?.isVisible = true
         }
     }
 
@@ -73,6 +76,7 @@ class TimelineActivity : AppCompatActivity() {
             super.onCreateOptionsMenu(menu)
         } else {
             menuInflater.inflate(R.menu.timeline_menu, menu)
+            logoutMenuItem = menu?.getItem(0)
             true
         }
     }
