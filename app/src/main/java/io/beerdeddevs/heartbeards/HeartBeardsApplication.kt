@@ -2,7 +2,6 @@ package io.beerdeddevs.heartbeards
 
 import android.app.Activity
 import android.app.Application
-import android.app.UiModeManager.MODE_NIGHT_YES
 import android.support.design.widget.BottomSheetDialogFragment
 import android.support.v7.app.AppCompatDelegate
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -22,8 +21,7 @@ class HeartBeardsApplication : Application() {
             .addOnSuccessListener { firebaseRemoteConfig.activateFetched() }
             .addOnFailureListener { throw it }
 
-//        AppCompatDelegate.setDefaultNightMode(firebaseRemoteConfig.getLong("night_mode").toInt())
-        AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
+        AppCompatDelegate.setDefaultNightMode(firebaseRemoteConfig.getLong("night_mode").toInt())
     }
 }
 
