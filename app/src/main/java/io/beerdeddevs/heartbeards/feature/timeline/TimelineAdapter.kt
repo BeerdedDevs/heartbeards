@@ -7,26 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.firebase.ui.database.FirebaseRecyclerAdapter
+import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.squareup.picasso.Picasso
 import io.beerdeddevs.heartbeards.R
 
-class TimelineAdapter(context: Context) : RecyclerView.Adapter<TimelineAdapter.ViewHolder>() {
+class TimelineAdapter(context: Context, options: FirebaseRecyclerOptions<TimelineItem>) :
+        FirebaseRecyclerAdapter<TimelineItem, TimelineAdapter.ViewHolder>(options) {
 
     private val picasso: Picasso = Picasso.with(context)
     private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
-    private val collection = ArrayList<TimelineItem>()
 
-    fun addAll(list: List<TimelineItem>) {
-        collection.addAll(list)
-        notifyItemRangeInserted(collection.size - list.size, list.size)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int, model: TimelineItem) {
+        holder.nameTextView.text = model.name
+        picasso.load(model.imageUrl).into(holder.beardImageView)
     }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.nameTextView.text = collection[position].name
-        picasso.load(collection[position].imageUrl).into(holder.beardImageView)
-    }
-
-    override fun getItemCount(): Int = collection.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
             = ViewHolder(layoutInflater.inflate(R.layout.recycler_item_timeline, parent, false))
