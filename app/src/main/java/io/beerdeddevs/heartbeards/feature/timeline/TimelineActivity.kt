@@ -15,6 +15,8 @@ import com.google.firebase.auth.FirebaseAuth
 import io.beerdeddevs.heartbeards.R
 import io.beerdeddevs.heartbeards.feature.picture.choose.BottomSheetChoosePicture
 import io.beerdeddevs.heartbeards.feature.signup.welcome.WelcomeActivity
+import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.firebase.database.FirebaseDatabase
 
 const val REQUEST_CODE_SIGN_IN = 111
 
@@ -37,16 +39,30 @@ class TimelineActivity : AppCompatActivity() {
             }
         }
 
-        adapter = TimelineAdapter(this@TimelineActivity)
+        val firebaseRef = FirebaseDatabase.getInstance()
+                .reference
+                .child("timeline")
+
+        val options = FirebaseRecyclerOptions.Builder<TimelineItem>()
+                .setQuery(firebaseRef.limitToLast(50), TimelineItem::class.java)
+                .build()
+
+        adapter = TimelineAdapter(this@TimelineActivity, options)
         findViewById<RecyclerView>(R.id.recycler).apply {
             layoutManager = LinearLayoutManager(this@TimelineActivity)
             adapter = this@TimelineActivity.adapter
         }
 
-        adapter.addAll(listOf(TimelineItem("Someone1", "http://via.placeholder.com/350x650"),
-                TimelineItem("Someone2", "http://via.placeholder.com/500x350"),
-                TimelineItem("Someone3", "http://via.placeholder.com/450x750"),
-                TimelineItem("Someone4", "http://via.placeholder.com/450x450")))
+    }
+
+    override fun onStart() {
+        super.onStart()
+        adapter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        adapter.stopListening()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
