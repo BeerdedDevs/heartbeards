@@ -13,7 +13,7 @@ class BeardLoading : DialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
             = layoutInflater.inflate(R.layout.fragment_progress, container, false).also {
-        dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
 }
