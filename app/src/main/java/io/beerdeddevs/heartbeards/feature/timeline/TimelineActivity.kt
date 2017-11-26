@@ -54,8 +54,15 @@ class TimelineActivity : AppCompatActivity() {
                 .build()
 
         adapter = TimelineAdapter(this@TimelineActivity, options)
+        adapter.setHasStableIds(true)
 
         findViewById<RecyclerView>(R.id.recycler).apply {
+            // Optimizations taken from here - https://stackoverflow.com/a/36919009/1979703
+            setHasFixedSize(true)
+            setItemViewCacheSize(50)
+            isDrawingCacheEnabled = true
+            drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
+
             layoutManager = LinearLayoutManager(this@TimelineActivity)
             adapter = this@TimelineActivity.adapter
         }
