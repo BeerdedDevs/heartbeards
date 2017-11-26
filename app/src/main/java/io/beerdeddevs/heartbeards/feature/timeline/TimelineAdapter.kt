@@ -22,7 +22,6 @@ class TimelineAdapter(context: Context, options: FirebaseRecyclerOptions<Timelin
     override fun onBindViewHolder(holder: ViewHolder, position: Int, model: TimelineItem) {
         holder.nameTextView.text = model.name
         picasso.load(model.imageUrl)
-            .rotate(-90.0f) // There's an issue with the Exif orientation and this is a super hacky bug in order to show the image properly.
             .into(holder.beardImageView)
         holder.favIcon.setOnClickListener {
             holder.favIcon.setImageResource(R.drawable.ic_fav_full)

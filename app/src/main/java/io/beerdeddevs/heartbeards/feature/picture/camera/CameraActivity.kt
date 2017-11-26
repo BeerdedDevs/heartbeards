@@ -1,16 +1,11 @@
 package io.beerdeddevs.heartbeards.feature.picture.camera
 
 import android.app.Activity
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import butterknife.BindView
 import butterknife.OnClick
@@ -64,8 +59,7 @@ class CameraActivity : AppCompatActivity() {
         val file = File(filesDir, "${System.currentTimeMillis()}.png")
 
         displayProgress()
-        photoResult.saveToFile(file)
-                .whenAvailable {
+        photoResult.saveToFile(file).whenAvailable {
             val riversRef = FirebaseStorage.getInstance().reference.child("images/$uniqueId.jpg")
 
             riversRef.putFile(Uri.fromFile(file))
