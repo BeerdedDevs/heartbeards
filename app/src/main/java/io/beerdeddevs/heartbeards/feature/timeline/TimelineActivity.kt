@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import butterknife.ButterKnife
 import butterknife.OnClick
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
@@ -28,7 +29,7 @@ class TimelineActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timeline)
-
+        ButterKnife.bind(this)
         val firebaseRef = FirebaseDatabase.getInstance()
                 .reference
                 .child("timeline")
@@ -87,6 +88,7 @@ class TimelineActivity : AppCompatActivity() {
                         .signOut(this)
                         .addOnCompleteListener {
                             //TOOD: Do something?
+                            item.isVisible = false
                             Log.d("Logout", "User logged out")
                         }
             }
