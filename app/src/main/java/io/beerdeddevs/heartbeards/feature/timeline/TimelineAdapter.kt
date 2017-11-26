@@ -21,6 +21,10 @@ class TimelineAdapter(context: Context, options: FirebaseRecyclerOptions<Timelin
     override fun onBindViewHolder(holder: ViewHolder, position: Int, model: TimelineItem) {
         holder.nameTextView.text = model.name
         picasso.load(model.imageUrl).into(holder.beardImageView)
+        holder.favIcon.setOnClickListener({ view ->
+            // TODO: Fav!
+            (view as ImageView).setImageResource(R.drawable.ic_fav_full)
+        })
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
@@ -29,6 +33,7 @@ class TimelineAdapter(context: Context, options: FirebaseRecyclerOptions<Timelin
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val beardImageView: ImageView = view.findViewById(R.id.beardImageView)
         val nameTextView: TextView = view.findViewById(R.id.nameTextView)
+        val favIcon: ImageView = view.findViewById(R.id.likeButton)
     }
 
 }

@@ -40,6 +40,7 @@ dependencies {
     implementation 'io.fotoapparat.fotoapparat:library:1.4.1'
     implementation 'com.vanniktech:rxpermission:0.1.0'
     implementation 'com.google.dagger:dagger:2.13'
+    implementation 'com.airbnb.android:lottie:2.3.0'
 
     implementation "com.google.firebase:firebase-core:$firebaseVersion"
     implementation "com.google.firebase:firebase-crash:$firebaseVersion"

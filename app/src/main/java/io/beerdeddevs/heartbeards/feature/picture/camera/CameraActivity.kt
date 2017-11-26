@@ -1,16 +1,23 @@
 package io.beerdeddevs.heartbeards.feature.picture.camera
 
 import android.app.Activity
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.app.DialogFragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import butterknife.BindView
 import butterknife.OnClick
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import io.beerdeddevs.heartbeards.R
+import io.beerdeddevs.heartbeards.feature.common.BeardLoading
 import io.beerdeddevs.heartbeards.feature.timeline.TimelineItem
 import io.beerdeddevs.heartbeards.timelineReference
 import io.fotoapparat.Fotoapparat
@@ -56,7 +63,9 @@ class CameraActivity : AppCompatActivity() {
         val photoResult = fotoapparat.takePicture()
         val file = File(filesDir, "${System.currentTimeMillis()}.png")
 
-        photoResult.saveToFile(file).whenAvailable {
+        displayProgress()
+        photoResult.saveToFile(file)
+                .whenAvailable {
             val riversRef = FirebaseStorage.getInstance().reference.child("images/$uniqueId.jpg")
 
             riversRef.putFile(Uri.fromFile(file))
@@ -78,6 +87,20 @@ class CameraActivity : AppCompatActivity() {
                         finish()
                         Toast.makeText(this, R.string.upload_failed, Toast.LENGTH_SHORT).show()
                     })
+                    .addOnCompleteListener({
+                        dismissProgress()
+                    })
         }
     }
+
+    private val progressDialog: DialogFragment by lazy { BeardLoading() }
+
+    private fun displayProgress() {
+        progressDialog.show(supportFragmentManager, "BeardDialog")
+    }
+
+    private fun dismissProgress() {
+        progressDialog.dismiss()
+    }
+
 }
