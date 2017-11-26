@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "993281891611",
+    "firebase_url": "https://heartbeards-32a11.firebaseio.com",
+    "project_id": "heartbeards-32a11",
+    "storage_bucket": "heartbeards-32a11.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:993281891611:android:81a18b10d0c9eed4",
+        "android_client_info": {
+          "package_name": "io.beerdeddevs.heartbeards"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "993281891611-jvsqpe0vevdp9naj369j27hn0ddm9bbb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.beerdeddevs.heartbeards",
+            "certificate_hash": "012923112d106676cb675af5556089a9fc314500"
+          }
+        },
+        {
+          "client_id": "993281891611-p74v83udf5vkig3spc5fg1n3b34p57vp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZ75NOJPd0dj2BrV7xQ9LdmAf2nt3ZjDc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "993281891611-p74v83udf5vkig3spc5fg1n3b34p57vp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
