@@ -72,12 +72,13 @@ class TimelineActivity : AppCompatActivity() {
     fun addImageFabClicked() {
         if (FirebaseAuth.getInstance().currentUser == null) {
             val intent = AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setAvailableProviders(
-                    listOf(AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                        AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()
-                    ))
-                .build()
+                    .createSignInIntentBuilder()
+                    .setAvailableProviders(
+                            listOf(AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                    AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
+                    .setLogo(R.mipmap.logo)
+                    .setTheme(R.style.AppTheme)
+                    .build()
             startActivityForResult(intent, REQUEST_CODE_SIGN_IN)
         } else {
             BottomSheetChoosePicture().show(this@TimelineActivity)
