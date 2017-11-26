@@ -20,7 +20,6 @@ import io.fotoapparat.parameter.selector.SizeSelectors.biggestSize
 import io.fotoapparat.view.CameraView
 import java.io.File
 
-
 class CameraActivity : AppCompatActivity() {
     @BindView(R.id.activityCameraCameraView) internal lateinit var cameraView: CameraView
 
@@ -54,20 +53,18 @@ class CameraActivity : AppCompatActivity() {
     @OnClick(R.id.activityCameraTakePicture) internal fun onTakePictureClicked() {
         val pushItem = timelineReference.push()
         val uniqueId = pushItem.key
-
         val photoResult = fotoapparat.takePicture()
         val file = File(filesDir, "${System.currentTimeMillis()}.png")
-        photoResult.saveToFile(file).whenAvailable {
-            // TODO: missing upload here
-            val fileUri = Uri.fromFile(file)
-            val storageRef = FirebaseStorage.getInstance().getReference()
-            val riversRef = storageRef.child("images/$uniqueId.jpg")
 
-            riversRef.putFile(fileUri)
+        photoResult.saveToFile(file).whenAvailable {
+            val riversRef = FirebaseStorage.getInstance().reference.child("images/$uniqueId.jpg")
+
+            riversRef.putFile(Uri.fromFile(file))
                     .addOnSuccessListener({ taskSnapshot ->
                         // Get a URL to the uploaded content
                         val displayName = FirebaseAuth.getInstance().currentUser?.displayName ?: ""
-                        val insertedItem = TimelineItem(displayName, taskSnapshot.downloadUrl.toString())
+                        val insertedItem = TimelineItem(uniqueId, -System.currentTimeMillis(), displayName,
+                                taskSnapshot.downloadUrl.toString())
                         pushItem.setValue(insertedItem)
 
                         Log.d("Image Upload", "Upload successfull")

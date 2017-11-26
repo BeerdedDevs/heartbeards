@@ -32,10 +32,11 @@ class TimelineActivity : AppCompatActivity() {
         ButterKnife.bind(this)
 
         val options = FirebaseRecyclerOptions.Builder<TimelineItem>()
-                .setQuery(timelineReference.limitToLast(50), TimelineItem::class.java)
+                .setQuery(timelineReference.orderByChild("timestamp").limitToLast(50), TimelineItem::class.java)
                 .build()
 
         adapter = TimelineAdapter(this@TimelineActivity, options)
+
         findViewById<RecyclerView>(R.id.recycler).apply {
             layoutManager = LinearLayoutManager(this@TimelineActivity)
             adapter = this@TimelineActivity.adapter
