@@ -15,4 +15,10 @@
     <string name="gallery_title">Pick from gallery</string>
     <string name="logout">Logout</string>
     <string name="upload_failed">Image upload failed, please try again later</string>
+    <string name="share_things">Share</string>
+    <string name="invitation_title">Invitation to Heart Beards</string>
+    <string name="invitation_message">We want you. Your beard. Share it.</string>
+    <string name="invitation_cta">Invite</string>
+    <string name="invitation_deep_link">firebase_invite_deeplink</string>
+    <string name="invitation_sent_out">Your invitation was sent out</string>
 </resources>
