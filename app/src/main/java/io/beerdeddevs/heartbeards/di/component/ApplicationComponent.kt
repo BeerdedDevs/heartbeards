@@ -5,10 +5,11 @@ import dagger.Component
 import io.beerdeddevs.heartbeards.MainActivity
 import io.beerdeddevs.heartbeards.di.module.ApplicationModule
 import io.beerdeddevs.heartbeards.di.scope.ApplicationScope
+import io.beerdeddevs.heartbeards.feature.picture.choose.BottomSheetChoosePicture
 
 @ApplicationScope
 @Component(modules = arrayOf(ApplicationModule::class))
-abstract class ApplicationComponent {
+interface ApplicationComponent {
 
     companion object {
         fun create(application: Application): ApplicationComponent {
@@ -18,6 +19,7 @@ abstract class ApplicationComponent {
         }
     }
 
-    abstract fun inject(activity: MainActivity)
+    fun inject(activity: MainActivity)
 
+    fun inject(activity: BottomSheetChoosePicture)
 }

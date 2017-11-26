@@ -8,4 +8,8 @@
     <string name="no_internet_connection">No Internet connection</string>
     <string name="unknown_error">Something unknown happend. Try again later.</string>
     <string name="sign_in_successful">Sign In successfull, enjoy Heartbeards</string>
+    <string name="camera_permission_denied">Camera permission was denied</string>
+    <string name="camera_permission_denied_not_shown">Please enable the Camera permission in your settings</string>
+    <string name="camera_permission_denied_not_shown_action">Change</string>
+    <string name="camera_permission_revoked_by_policy">Camera permission was revoked by a policy</string>
 </resources>
