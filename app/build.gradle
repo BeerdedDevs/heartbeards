@@ -38,10 +38,11 @@ dependencies {
     implementation 'io.fotoapparat.fotoapparat:library:1.4.1'
     implementation 'com.vanniktech:rxpermission:0.1.0'
     implementation 'com.google.dagger:dagger:2.13'
-    
+
     implementation "com.google.firebase:firebase-core:$firebaseVersion"
     implementation "com.google.firebase:firebase-crash:$firebaseVersion"
     implementation "com.google.firebase:firebase-auth:$firebaseVersion"
+    implementation "com.google.firebase:firebase-messaging:$firebaseVersion"
     implementation 'com.firebaseui:firebase-ui-auth:3.1.0'
     kapt 'com.google.dagger:dagger-compiler:2.13'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
