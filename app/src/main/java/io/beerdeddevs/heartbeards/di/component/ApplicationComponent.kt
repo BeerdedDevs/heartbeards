@@ -5,7 +5,7 @@ import dagger.Component
 import io.beerdeddevs.heartbeards.di.module.ApplicationModule
 import io.beerdeddevs.heartbeards.di.scope.ApplicationScope
 import io.beerdeddevs.heartbeards.feature.picture.choose.BottomSheetChoosePicture
-import io.beerdeddevs.heartbeards.feature.signup.welcome.WelcomeActivity
+import io.beerdeddevs.heartbeards.feature.timeline.TimelineActivity
 
 @ApplicationScope
 @Component(modules = arrayOf(ApplicationModule::class))
@@ -21,5 +21,5 @@ interface ApplicationComponent {
 
     fun inject(activity: BottomSheetChoosePicture)
 
-    fun inject(welcomeActivity: WelcomeActivity)
+    fun inject(timelineActivity: TimelineActivity)
 }

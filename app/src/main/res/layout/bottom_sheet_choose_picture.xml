@@ -2,47 +2,36 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottomSheetChoosePicture"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
+    tools:background="#ff0"
     >
   <android.support.constraint.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       >
     <TextView
-        android:id="@+id/bottomSheetChoosePictureTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="56dp"
-        android:layout_marginEnd="@dimen/content_margin"
-        android:layout_marginLeft="@dimen/content_margin"
-        android:layout_marginRight="@dimen/content_margin"
-        android:layout_marginStart="@dimen/content_margin"
-        android:gravity="center"
-        android:text="@string/choose_picture_title"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
-    <TextView
         android:id="@+id/bottomSheetChoosePictureGallery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginStart="@dimen/content_margin"
+        android:layout_marginTop="56dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
-        android:drawablePadding="@dimen/content_margin"
+        android:drawablePadding="@dimen/content_margin_tiny"
         android:drawableTop="@drawable/ic_gallery"
         android:ellipsize="end"
         android:focusable="true"
         android:gravity="center"
         android:maxLines="1"
         android:text="@string/bottom_sheet_gallery"
+        app:layout_constraintEnd_toStartOf="@+id/bottomSheetChoosePictureCamera"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bottomSheetChoosePictureTitle"
+        app:layout_constraintTop_toBottomOf="parent"
         />
 
     <TextView
@@ -51,9 +40,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginStart="@dimen/content_margin"
+        android:layout_marginTop="56dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
-        android:drawablePadding="@dimen/content_margin"
+        android:drawablePadding="@dimen/content_margin_tiny"
         android:drawableTop="@drawable/ic_camera"
         android:ellipsize="end"
         android:focusable="true"
@@ -62,7 +52,7 @@
         android:text="@string/bottom_sheet_camera"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/bottomSheetChoosePictureGallery"
-        app:layout_constraintTop_toBottomOf="@+id/bottomSheetChoosePictureTitle"
+        app:layout_constraintTop_toBottomOf="parent"
         />
 
     <Space
