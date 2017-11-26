@@ -3,4 +3,9 @@
     <string name="choose_picture_title">Choose picture</string>
     <string name="bottom_sheet_gallery">Gallery</string>
     <string name="bottom_sheet_camera">Camera</string>
+    <string name="sign_up_button_text">SignUp</string>
+    <string name="sign_in_cancelled">Sign In cancelled</string>
+    <string name="no_internet_connection">No Internet connection</string>
+    <string name="unknown_error">Something unknown happend. Try again later.</string>
+    <string name="sign_in_successful">Sign In successfull, enjoy Heartbeards</string>
 </resources>
