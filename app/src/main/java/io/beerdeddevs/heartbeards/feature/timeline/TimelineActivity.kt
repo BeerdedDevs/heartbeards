@@ -1,5 +1,6 @@
 package io.beerdeddevs.heartbeards.feature.timeline
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
@@ -10,6 +11,8 @@ import com.google.firebase.auth.FirebaseAuth
 import io.beerdeddevs.heartbeards.R
 import io.beerdeddevs.heartbeards.feature.picture.choose.BottomSheetChoosePicture
 import io.beerdeddevs.heartbeards.feature.signup.welcome.WelcomeActivity
+
+const val REQUEST_CODE_SIGN_IN = 111
 
 class TimelineActivity : AppCompatActivity() {
 
@@ -22,7 +25,8 @@ class TimelineActivity : AppCompatActivity() {
         findViewById<FloatingActionButton>(R.id.addImageFab).apply {
             setOnClickListener {
                 if (FirebaseAuth.getInstance().currentUser == null) {
-                    startActivity(Intent(this@TimelineActivity, WelcomeActivity::class.java))
+                    startActivityForResult(Intent(this@TimelineActivity, WelcomeActivity::class.java),
+                            REQUEST_CODE_SIGN_IN)
                 } else {
                     BottomSheetChoosePicture().show(this@TimelineActivity)
                 }
@@ -39,6 +43,14 @@ class TimelineActivity : AppCompatActivity() {
                 TimelineItem("Someone2", "http://via.placeholder.com/500x350"),
                 TimelineItem("Someone3", "http://via.placeholder.com/450x750"),
                 TimelineItem("Someone4", "http://via.placeholder.com/450x450")))
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_CODE_SIGN_IN && resultCode == Activity.RESULT_OK) {
+            BottomSheetChoosePicture().show(this@TimelineActivity)
+        }
     }
 
 }

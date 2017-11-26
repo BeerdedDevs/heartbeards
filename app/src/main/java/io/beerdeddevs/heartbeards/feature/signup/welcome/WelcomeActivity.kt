@@ -15,6 +15,7 @@ import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.analytics.FirebaseAnalytics
 import io.beerdeddevs.heartbeards.R
+import io.beerdeddevs.heartbeards.feature.picture.choose.BottomSheetChoosePicture
 import io.beerdeddevs.heartbeards.getComponent
 import io.beerdeddevs.heartbeards.preferences.BeardPrefs
 import javax.inject.Inject
@@ -53,17 +54,14 @@ class WelcomeActivity : AppCompatActivity() {
         if (requestCode == RC_SIGN_IN) {
             val signUpResponse = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
-                //TODO: Go to the logged in screen
-                beardPrefs.apply {
-                    userLoggedIn = true
-                    userToken = signUpResponse?.idpToken ?: ""
-                }
-                beardPrefs.userLoggedIn = true
                 showSnackbar(R.string.sign_in_successful)
                 val bundle = Bundle().apply {
                     putString("STATUS", "completed")
                 }
                 firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SIGN_UP, bundle)
+
+                setResult(Activity.RESULT_OK)
+                finish()
             } else {
                 if (signUpResponse == null) {
                     // User pressed back button
