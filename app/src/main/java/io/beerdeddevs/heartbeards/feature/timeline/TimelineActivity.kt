@@ -14,10 +14,10 @@ import butterknife.OnClick
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import io.beerdeddevs.heartbeards.R
 import io.beerdeddevs.heartbeards.feature.picture.choose.BottomSheetChoosePicture
 import io.beerdeddevs.heartbeards.feature.signup.welcome.WelcomeActivity
+import io.beerdeddevs.heartbeards.timelineReference
 
 const val REQUEST_CODE_SIGN_IN = 111
 
@@ -30,12 +30,9 @@ class TimelineActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timeline)
         ButterKnife.bind(this)
-        val firebaseRef = FirebaseDatabase.getInstance()
-                .reference
-                .child("timeline")
 
         val options = FirebaseRecyclerOptions.Builder<TimelineItem>()
-                .setQuery(firebaseRef.limitToLast(50), TimelineItem::class.java)
+                .setQuery(timelineReference.limitToLast(50), TimelineItem::class.java)
                 .build()
 
         adapter = TimelineAdapter(this@TimelineActivity, options)
