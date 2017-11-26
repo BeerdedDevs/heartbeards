@@ -18,8 +18,5 @@
             </intent-filter>
         </activity>
         <activity android:name=".feature.picture.camera.CameraActivity" />
-        <activity
-            android:name=".feature.signup.welcome.WelcomeActivity"
-            android:exported="true" />
     </application>
 </manifest>
