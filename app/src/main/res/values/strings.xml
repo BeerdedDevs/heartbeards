@@ -1,6 +1,6 @@
 <resources>
-  <string name="app_name">HeartBeards</string>
-  <string name="choose_picture_title">Choose picture</string>
-  <string name="bottom_sheet_gallery">Gallery</string>
-  <string name="bottom_sheet_camera">Camera</string>
+    <string name="app_name">HeartBeards</string>
+    <string name="choose_picture_title">Choose picture</string>
+    <string name="bottom_sheet_gallery">Gallery</string>
+    <string name="bottom_sheet_camera">Camera</string>
 </resources>
