@@ -7,6 +7,10 @@ import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import io.beerdeddevs.heartbeards.R
 import io.beerdeddevs.heartbeards.feature.picture.choose.BottomSheetChoosePicture
@@ -51,6 +55,25 @@ class TimelineActivity : AppCompatActivity() {
         if (requestCode == REQUEST_CODE_SIGN_IN && resultCode == Activity.RESULT_OK) {
             BottomSheetChoosePicture().show(this@TimelineActivity)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.timeline_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.logout_menu_item -> {
+                AuthUI.getInstance()
+                        .signOut(this)
+                        .addOnCompleteListener {
+                            //TOOD: Do something?
+                            Log.d("Logout", "User logged out")
+                        }
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }

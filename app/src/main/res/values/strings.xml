@@ -13,4 +13,5 @@
     <string name="camera_permission_denied_not_shown_action">Change</string>
     <string name="camera_permission_revoked_by_policy">Camera permission was revoked by a policy</string>
     <string name="gallery_title">Pick from gallery</string>
+    <string name="logout">Logout</string>
 </resources>
