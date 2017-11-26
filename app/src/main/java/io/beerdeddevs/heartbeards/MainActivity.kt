@@ -6,12 +6,12 @@ import android.view.View
 import io.beerdeddevs.heartbeards.feature.picture.choose.BottomSheetChoosePicture
 
 class MainActivity : AppCompatActivity() {
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
-
-    findViewById<View>(R.id.activityMainHelloWorld).setOnClickListener {
-      BottomSheetChoosePicture().show(this)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        getComponent().inject(this)
+        setContentView (R.layout.activity_main)
+        findViewById<View>(R.id.activityMainHelloWorld).setOnClickListener {
+            BottomSheetChoosePicture().show(this)
+        }
     }
-  }
 }
