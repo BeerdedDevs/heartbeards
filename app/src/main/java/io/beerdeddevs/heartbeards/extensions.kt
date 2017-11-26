@@ -27,5 +27,7 @@ fun TextView.setTopDrawable(drawable: Drawable?) {
 }
 
 val Activity.timelineReference: DatabaseReference by lazy {
-  FirebaseDatabase.getInstance().reference.child("timeline")
+  val database = FirebaseDatabase.getInstance()
+  database.setPersistenceEnabled(true)
+  database.reference.child("timeline")
 }
