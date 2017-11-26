@@ -17,6 +17,7 @@ import io.beerdeddevs.heartbeards.feature.picture.choose.BottomSheetChoosePictur
 import io.beerdeddevs.heartbeards.feature.signup.welcome.WelcomeActivity
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.FirebaseDatabase
+import io.beerdeddevs.heartbeards.timelineReference
 
 const val REQUEST_CODE_SIGN_IN = 111
 
@@ -39,12 +40,8 @@ class TimelineActivity : AppCompatActivity() {
             }
         }
 
-        val firebaseRef = FirebaseDatabase.getInstance()
-                .reference
-                .child("timeline")
-
         val options = FirebaseRecyclerOptions.Builder<TimelineItem>()
-                .setQuery(firebaseRef.limitToLast(50), TimelineItem::class.java)
+                .setQuery(timelineReference.limitToLast(50), TimelineItem::class.java)
                 .build()
 
         adapter = TimelineAdapter(this@TimelineActivity, options)
