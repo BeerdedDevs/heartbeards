@@ -1,6 +1,5 @@
 package io.beerdeddevs.heartbeards
 
-import android.app.Activity
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.widget.TextView
@@ -26,7 +25,8 @@ fun TextView.setTopDrawable(drawable: Drawable?) {
   setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
 }
 
-val Activity.timelineReference: DatabaseReference by lazy {
+// Kotlin any extension property for the win.
+val Any.timelineReference: DatabaseReference by lazy {
   val database = FirebaseDatabase.getInstance()
   database.setPersistenceEnabled(true)
   database.reference.child("timeline")
