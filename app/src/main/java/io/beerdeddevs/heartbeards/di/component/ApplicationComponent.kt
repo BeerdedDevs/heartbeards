@@ -2,7 +2,6 @@ package io.beerdeddevs.heartbeards.di.component
 
 import android.app.Application
 import dagger.Component
-import io.beerdeddevs.heartbeards.MainActivity
 import io.beerdeddevs.heartbeards.di.module.ApplicationModule
 import io.beerdeddevs.heartbeards.di.scope.ApplicationScope
 import io.beerdeddevs.heartbeards.feature.picture.choose.BottomSheetChoosePicture
@@ -19,8 +18,6 @@ interface ApplicationComponent {
                     .build()
         }
     }
-
-    fun inject(activity: MainActivity)
 
     fun inject(activity: BottomSheetChoosePicture)
 

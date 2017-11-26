@@ -1,12 +1,15 @@
 package io.beerdeddevs.heartbeards.feature.timeline
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import io.beerdeddevs.heartbeards.R
 import io.beerdeddevs.heartbeards.feature.picture.choose.BottomSheetChoosePicture
+import io.beerdeddevs.heartbeards.feature.signup.welcome.WelcomeActivity
 
 class TimelineActivity : AppCompatActivity() {
 
@@ -18,8 +21,11 @@ class TimelineActivity : AppCompatActivity() {
 
         findViewById<FloatingActionButton>(R.id.addImageFab).apply {
             setOnClickListener {
-                // TODO: Check if user is logged in and navigate either sign in or show bottomSheet
-                BottomSheetChoosePicture().show(this@TimelineActivity)
+                if (FirebaseAuth.getInstance().currentUser == null) {
+                    startActivity(Intent(this@TimelineActivity, WelcomeActivity::class.java))
+                } else {
+                    BottomSheetChoosePicture().show(this@TimelineActivity)
+                }
             }
         }
 
