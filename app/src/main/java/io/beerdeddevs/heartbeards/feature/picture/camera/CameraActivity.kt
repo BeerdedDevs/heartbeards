@@ -71,7 +71,7 @@ class CameraActivity : AppCompatActivity() {
             riversRef.putFile(Uri.fromFile(file))
                     .addOnSuccessListener({ taskSnapshot ->
                         // Get a URL to the uploaded content
-                        val displayName = FirebaseAuth.getInstance().currentUser?.displayName ?: ""
+                        val displayName = FirebaseAuth.getInstance().currentUser?.displayName ?: "Anonymous"
                         val insertedItem = TimelineItem(uniqueId, -System.currentTimeMillis(), displayName,
                                 taskSnapshot.downloadUrl.toString())
                         pushItem.setValue(insertedItem)
