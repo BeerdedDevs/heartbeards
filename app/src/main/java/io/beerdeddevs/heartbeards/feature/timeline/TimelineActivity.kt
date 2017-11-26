@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import butterknife.OnClick
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import io.beerdeddevs.heartbeards.R
@@ -28,17 +29,6 @@ class TimelineActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timeline)
 
-        findViewById<FloatingActionButton>(R.id.addImageFab).apply {
-            setOnClickListener {
-                if (FirebaseAuth.getInstance().currentUser == null) {
-                    startActivityForResult(Intent(this@TimelineActivity, WelcomeActivity::class.java),
-                            REQUEST_CODE_SIGN_IN)
-                } else {
-                    BottomSheetChoosePicture().show(this@TimelineActivity)
-                }
-            }
-        }
-
         val firebaseRef = FirebaseDatabase.getInstance()
                 .reference
                 .child("timeline")
@@ -52,7 +42,15 @@ class TimelineActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@TimelineActivity)
             adapter = this@TimelineActivity.adapter
         }
+    }
 
+    @OnClick(R.id.addImageFab) fun addImageFabClicked() {
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            startActivityForResult(Intent(this@TimelineActivity, WelcomeActivity::class.java),
+                    REQUEST_CODE_SIGN_IN)
+        } else {
+            BottomSheetChoosePicture().show(this@TimelineActivity)
+        }
     }
 
     override fun onStart() {
