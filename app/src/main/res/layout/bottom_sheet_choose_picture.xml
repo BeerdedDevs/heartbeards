@@ -41,7 +41,7 @@
       />
 
   <TextView
-      android:id="@+id/bottomSheetChoosePictureCam"
+      android:id="@+id/bottomSheetChoosePictureCamera"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
