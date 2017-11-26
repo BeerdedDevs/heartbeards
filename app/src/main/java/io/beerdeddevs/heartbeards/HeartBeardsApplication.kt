@@ -19,7 +19,7 @@ class HeartBeardsApplication : Application() {
         firebaseRemoteConfig.setConfigSettings(FirebaseRemoteConfigSettings.Builder().setDeveloperModeEnabled(BuildConfig.DEBUG).build())
         firebaseRemoteConfig.fetch(if (BuildConfig.DEBUG) 1 else TimeUnit.HOURS.toSeconds(12))
             .addOnSuccessListener { firebaseRemoteConfig.activateFetched() }
-            .addOnFailureListener { throw it }
+            .addOnFailureListener { /** Do nothing */ }
 
         AppCompatDelegate.setDefaultNightMode(firebaseRemoteConfig.getLong("night_mode").toInt())
     }
