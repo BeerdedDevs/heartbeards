@@ -13,8 +13,18 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         resConfigs "auto"
     }
+    signingConfigs {
+        release {
+            // http://stackoverflow.com/a/21020469/1979703
+            storeFile rootProject.file('beerdeddevs.keystore')
+            storePassword '12345678'
+            keyAlias 'beerdeddevs'
+            keyPassword '12345678'
+        }
+    }
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
