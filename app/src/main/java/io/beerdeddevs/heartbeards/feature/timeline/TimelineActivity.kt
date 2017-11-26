@@ -58,8 +58,12 @@ class TimelineActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.timeline_menu, menu)
-        return true
+        return if (FirebaseAuth.getInstance().currentUser == null) {
+            super.onCreateOptionsMenu(menu)
+        } else {
+            menuInflater.inflate(R.menu.timeline_menu, menu)
+            true
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
