@@ -13,18 +13,23 @@ import butterknife.OnClick
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
+import com.google.firebase.analytics.FirebaseAnalytics
 import io.beerdeddevs.heartbeards.R
+import io.beerdeddevs.heartbeards.getComponent
+import javax.inject.Inject
 
 
 private val RC_SIGN_IN = 123
 
 class WelcomeActivity : AppCompatActivity() {
 
+    @Inject internal lateinit var firebaseAnalytics: FirebaseAnalytics
     @BindView(R.id.sign_up_parent) internal lateinit var signUpParentLayout: ConstraintLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
         ButterKnife.bind(this)
+        getComponent().inject(this)
     }
 
     @OnClick(R.id.sign_up_button)
@@ -47,6 +52,10 @@ class WelcomeActivity : AppCompatActivity() {
             if (resultCode == Activity.RESULT_OK) {
                 //TODO: Go to the logged in screen
                 showSnackbar(R.string.sign_in_successful)
+                val bundle = Bundle().apply {
+                    putString("STATUS", "completed")
+                }
+                firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SIGN_UP, bundle)
             } else {
                 if (signUpResponse == null) {
                     // User pressed back button

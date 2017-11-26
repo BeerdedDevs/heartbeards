@@ -6,6 +6,7 @@ import io.beerdeddevs.heartbeards.MainActivity
 import io.beerdeddevs.heartbeards.di.module.ApplicationModule
 import io.beerdeddevs.heartbeards.di.scope.ApplicationScope
 import io.beerdeddevs.heartbeards.feature.picture.choose.BottomSheetChoosePicture
+import io.beerdeddevs.heartbeards.feature.signup.welcome.WelcomeActivity
 
 @ApplicationScope
 @Component(modules = arrayOf(ApplicationModule::class))
@@ -22,4 +23,6 @@ interface ApplicationComponent {
     fun inject(activity: MainActivity)
 
     fun inject(activity: BottomSheetChoosePicture)
+
+    fun inject(welcomeActivity: WelcomeActivity)
 }

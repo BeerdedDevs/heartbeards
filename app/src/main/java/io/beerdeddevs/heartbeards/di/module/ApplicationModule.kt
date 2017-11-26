@@ -1,6 +1,7 @@
 package io.beerdeddevs.heartbeards.di.module
 
 import android.app.Application
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.vanniktech.rxpermission.RealRxPermission
 import com.vanniktech.rxpermission.RxPermission
 import dagger.Module
@@ -14,5 +15,9 @@ class ApplicationModule(private val application: Application) {
     @Provides
     fun provideApplication(): Application = application
 
-    @Provides fun provideRxPermission(): RxPermission = RealRxPermission.getInstance(application)
+    @Provides
+    fun provideRxPermission(): RxPermission = RealRxPermission.getInstance(application)
+
+    @Provides
+    fun provideFirebaseAnalytics(application: Application): FirebaseAnalytics = FirebaseAnalytics.getInstance(application)
 }
