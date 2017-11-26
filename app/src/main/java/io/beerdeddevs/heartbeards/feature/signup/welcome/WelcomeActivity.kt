@@ -16,6 +16,7 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.analytics.FirebaseAnalytics
 import io.beerdeddevs.heartbeards.R
 import io.beerdeddevs.heartbeards.getComponent
+import io.beerdeddevs.heartbeards.preferences.BeardPrefs
 import javax.inject.Inject
 
 
@@ -24,6 +25,8 @@ private val RC_SIGN_IN = 123
 class WelcomeActivity : AppCompatActivity() {
 
     @Inject internal lateinit var firebaseAnalytics: FirebaseAnalytics
+    @Inject internal lateinit var beardPrefs: BeardPrefs
+
     @BindView(R.id.sign_up_parent) internal lateinit var signUpParentLayout: ConstraintLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +54,11 @@ class WelcomeActivity : AppCompatActivity() {
             val signUpResponse = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
                 //TODO: Go to the logged in screen
+                beardPrefs.apply {
+                    userLoggedIn = true
+                    userToken = signUpResponse?.idpToken ?: ""
+                }
+                beardPrefs.userLoggedIn = true
                 showSnackbar(R.string.sign_in_successful)
                 val bundle = Bundle().apply {
                     putString("STATUS", "completed")

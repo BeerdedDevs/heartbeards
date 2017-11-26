@@ -29,6 +29,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
     implementation 'com.jakewharton:butterknife:8.8.1'
+
     kapt 'com.jakewharton:butterknife-compiler:8.8.1'
 
     implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
@@ -44,6 +45,7 @@ dependencies {
     implementation "com.google.firebase:firebase-crash:$firebaseVersion"
     implementation "com.google.firebase:firebase-auth:$firebaseVersion"
     implementation "com.google.firebase:firebase-messaging:$firebaseVersion"
+    implementation "com.google.firebase:firebase-storage:$firebaseVersion"
     implementation 'com.firebaseui:firebase-ui-auth:3.1.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     kapt 'com.google.dagger:dagger-compiler:2.13'
