@@ -1,8 +1,11 @@
 package io.beerdeddevs.heartbeards.feature.picture.choose
 
 import android.Manifest.permission.CAMERA
+import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
+import android.content.Intent.ACTION_GET_CONTENT
+import android.content.Intent.CATEGORY_OPENABLE
 import android.net.Uri.fromParts
 import android.os.Bundle
 import android.provider.Settings
@@ -20,6 +23,7 @@ import com.vanniktech.rxpermission.Permission.State.REVOKED_BY_POLICY
 import com.vanniktech.rxpermission.RxPermission
 import io.beerdeddevs.heartbeards.BuildConfig
 import io.beerdeddevs.heartbeards.R
+import io.beerdeddevs.heartbeards.R.string
 import io.beerdeddevs.heartbeards.feature.picture.camera.CameraActivity
 import io.beerdeddevs.heartbeards.getComponent
 import io.beerdeddevs.heartbeards.plusAssign
@@ -47,7 +51,11 @@ class BottomSheetChoosePicture : BottomSheetDialogFragment() {
   }
 
   @OnClick(R.id.bottomSheetChoosePictureGallery) internal fun onGalleryClicked() {
-    dismiss()
+    startActivityForResult(Intent.createChooser(Intent().apply {
+      type = "image/*"
+      addCategory(CATEGORY_OPENABLE)
+      action = ACTION_GET_CONTENT
+    }, getString(string.gallery_title)), PICK_IMAGE_REQUEST_CODE)
   }
 
   @OnClick(R.id.bottomSheetChoosePictureCamera) internal fun onCameraClicked() {
@@ -75,6 +83,13 @@ class BottomSheetChoosePicture : BottomSheetDialogFragment() {
         }, { throw it })
   }
 
+  override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
+    if (requestCode == PICK_IMAGE_REQUEST_CODE && intent != null && resultCode == Activity.RESULT_OK) {
+      val stream = context?.contentResolver?.openInputStream(intent.data)
+      // TODO: upload the stream to the server
+    }
+  }
+
   override fun onDestroyView() {
     super.onDestroyView()
     compositeDisposable.clear()
@@ -86,5 +101,6 @@ class BottomSheetChoosePicture : BottomSheetDialogFragment() {
 
   companion object {
     private const val TAG = "BottomSheetAvatar"
+    private const val PICK_IMAGE_REQUEST_CODE = 51324
   }
 }
