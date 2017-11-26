@@ -9,14 +9,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.jakewharton.picasso.OkHttp3Downloader
 import com.squareup.picasso.Picasso
 import io.beerdeddevs.heartbeards.R
 
 class TimelineAdapter(context: Context, options: FirebaseRecyclerOptions<TimelineItem>) :
         FirebaseRecyclerAdapter<TimelineItem, TimelineAdapter.ViewHolder>(options) {
 
-    private val picasso: Picasso = Picasso.with(context)
-    private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
+    private val picasso = Picasso.Builder(context).downloader(OkHttp3Downloader(context)).build()
+    private val layoutInflater = LayoutInflater.from(context)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, model: TimelineItem) {
         holder.nameTextView.text = model.name
