@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_heartbeards"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".feature.timeline.TimelineActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,9 +20,6 @@
         <activity android:name=".feature.picture.camera.CameraActivity" />
         <activity
             android:name=".feature.signup.welcome.WelcomeActivity"
-            android:exported="true" />
-        <activity
-            android:name=".feature.timeline.TimelineActivity"
             android:exported="true" />
     </application>
 </manifest>
