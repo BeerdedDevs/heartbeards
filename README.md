@@ -31,5 +31,5 @@
 ![](allthethings.png)
 
 ---
-
+## GET IT NOW
 ![inline](qr_download.jpg)
