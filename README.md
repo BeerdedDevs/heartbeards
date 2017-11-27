@@ -32,9 +32,4 @@
 
 ---
 
-# [fit] __Let's love some beards [DEMO TIME]__
-
----
-
-# Thank you!!!
 ![inline](qr_download.jpg)
