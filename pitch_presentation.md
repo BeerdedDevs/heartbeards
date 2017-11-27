@@ -12,7 +12,7 @@ autoscale: true
 
 - Social Network for Beard lovers
 - Upload Images
-- Registering / Authentication
+- Registration / Authentication
 - Notifications about new beards
 - [Beta] Rate beards
 - [Roadmap] Matching of potential dates
