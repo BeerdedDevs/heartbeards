@@ -1,0 +1,37 @@
+language: android
+
+android:
+  components:
+    - tools
+    - platform-tools
+
+jdk:
+  - oraclejdk8
+
+before_script:
+  - mkdir "$ANDROID_HOME/licenses" || true
+  - echo "d56f5187479451eabf01fb78af6dfcb131a6481e" > "$ANDROID_HOME/licenses/android-sdk-license"
+
+before_install:
+  - pip install --user codecov
+
+install: true
+
+script: ./gradlew clean build
+
+after_success:
+  - codecov
+
+branches:
+  except:
+    - gh-pages
+
+notifications:
+  email: false
+
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.gradle
+    - $HOME/.m2
