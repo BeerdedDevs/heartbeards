@@ -1,6 +1,8 @@
 # HeartBeards
 ![inline](logo_web_hi_res_512.png)
 
+This is a project that was created during the Firebase Hackathon at the Google Dev Fest in Hamburg 2017. The code is gross but did the job in the end.
+
 ---
 
 - Social Network for Beard lovers
