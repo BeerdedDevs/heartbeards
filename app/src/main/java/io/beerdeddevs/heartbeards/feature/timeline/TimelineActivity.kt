@@ -25,7 +25,6 @@ import com.google.firebase.auth.FirebaseAuth
 import io.beerdeddevs.heartbeards.R
 import io.beerdeddevs.heartbeards.feature.picture.choose.BottomSheetChoosePicture
 import io.beerdeddevs.heartbeards.getComponent
-import io.beerdeddevs.heartbeards.preferences.BeardPrefs
 import io.beerdeddevs.heartbeards.timelineReference
 import javax.inject.Inject
 
@@ -37,7 +36,6 @@ class TimelineActivity : AppCompatActivity() {
     @BindView(R.id.activityTimeline) internal lateinit var rootView: View
 
     @Inject internal lateinit var firebaseAnalytics: FirebaseAnalytics
-    @Inject internal lateinit var beardPrefs: BeardPrefs
 
     private lateinit var adapter: TimelineAdapter
 
