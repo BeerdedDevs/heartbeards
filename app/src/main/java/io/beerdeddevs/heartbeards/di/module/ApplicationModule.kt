@@ -7,7 +7,6 @@ import com.vanniktech.rxpermission.RxPermission
 import dagger.Module
 import dagger.Provides
 import io.beerdeddevs.heartbeards.di.scope.ApplicationScope
-import io.beerdeddevs.heartbeards.preferences.BeardPrefs
 
 @ApplicationScope
 @Module
@@ -21,7 +20,4 @@ class ApplicationModule(private val application: Application) {
 
     @Provides
     fun provideFirebaseAnalytics(application: Application): FirebaseAnalytics = FirebaseAnalytics.getInstance(application)
-
-    @Provides
-    fun provideBeardPrefs(application: Application): BeardPrefs = BeardPrefs(application)
 }
