@@ -49,3 +49,6 @@ buck-out
 
 # Ignore rt.jar that is needed for Buck
 app/libs/rt.jar
+
+# Ignore Firebase node_modules directory
+node_modules/
