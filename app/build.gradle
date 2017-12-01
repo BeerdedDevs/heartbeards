@@ -80,7 +80,7 @@ configurations.all {
             if (details.requested.group == 'com.android.support' && !details.requested.name.startsWith('multidex')) {
                 details.useVersion supportLibraryVersion
             }
-            if (details.requested.group == 'com.google.android.gms' && !details.requested.name.startsWith('multidex')) {
+            if (details.requested.group == 'com.google.android.gms') {
                 details.useVersion firebaseVersion
             }
         }
