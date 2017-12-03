@@ -6,11 +6,15 @@ import android.support.design.widget.BottomSheetDialogFragment
 import android.support.v7.app.AppCompatDelegate
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
-import io.beerdeddevs.heartbeards.di.component.ApplicationComponent
+import io.beerdeddevs.heartbeards.di.component.DaggerApplicationComponent
 import java.util.concurrent.TimeUnit
 
 class HeartBeardsApplication : Application() {
-    val applicationComponent by lazy { ApplicationComponent.create(this) }
+    val applicationComponent by lazy {
+        DaggerApplicationComponent.builder()
+            .application(this)
+            .build()
+    }
 
     override fun onCreate() {
         super.onCreate()
