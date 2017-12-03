@@ -6,18 +6,13 @@ import com.vanniktech.rxpermission.RealRxPermission
 import com.vanniktech.rxpermission.RxPermission
 import dagger.Module
 import dagger.Provides
-import io.beerdeddevs.heartbeards.di.scope.ApplicationScope
 
-@ApplicationScope
-@Module
-class ApplicationModule(private val application: Application) {
+@Module object ApplicationModule {
+  @Provides
+  @JvmStatic
+  fun provideRxPermission(application: Application): RxPermission = RealRxPermission.getInstance(application)
 
-    @Provides
-    fun provideApplication(): Application = application
-
-    @Provides
-    fun provideRxPermission(): RxPermission = RealRxPermission.getInstance(application)
-
-    @Provides
-    fun provideFirebaseAnalytics(application: Application): FirebaseAnalytics = FirebaseAnalytics.getInstance(application)
+  @Provides
+  @JvmStatic
+  fun provideFirebaseAnalytics(application: Application) = FirebaseAnalytics.getInstance(application)
 }

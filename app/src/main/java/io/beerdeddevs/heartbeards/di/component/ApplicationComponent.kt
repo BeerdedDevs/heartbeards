@@ -1,6 +1,7 @@
 package io.beerdeddevs.heartbeards.di.component
 
 import android.app.Application
+import dagger.BindsInstance
 import dagger.Component
 import io.beerdeddevs.heartbeards.di.module.ApplicationModule
 import io.beerdeddevs.heartbeards.di.scope.ApplicationScope
@@ -8,18 +9,15 @@ import io.beerdeddevs.heartbeards.feature.picture.choose.BottomSheetChoosePictur
 import io.beerdeddevs.heartbeards.feature.timeline.TimelineActivity
 
 @ApplicationScope
-@Component(modules = arrayOf(ApplicationModule::class))
+@Component(modules = [ApplicationModule::class])
 interface ApplicationComponent {
+  fun inject(activity: BottomSheetChoosePicture)
 
-    companion object {
-        fun create(application: Application): ApplicationComponent {
-            return DaggerApplicationComponent.builder()
-                    .applicationModule(ApplicationModule(application))
-                    .build()
-        }
-    }
+  fun inject(timelineActivity: TimelineActivity)
 
-    fun inject(activity: BottomSheetChoosePicture)
+  @Component.Builder interface Builder {
+    @BindsInstance fun application(application: Application): Builder
 
-    fun inject(timelineActivity: TimelineActivity)
+    fun build(): ApplicationComponent
+  }
 }
