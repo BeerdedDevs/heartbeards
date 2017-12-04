@@ -7,9 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_GET_CONTENT
 import android.content.Intent.CATEGORY_OPENABLE
-import android.graphics.Color
 import android.graphics.PorterDuff.Mode.SRC_IN
-import android.net.Uri
 import android.net.Uri.fromParts
 import android.os.Bundle
 import android.provider.Settings
@@ -26,7 +24,6 @@ import android.widget.Toast
 import butterknife.BindView
 import butterknife.OnClick
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.storage.FirebaseStorage
 import com.vanniktech.rxpermission.Permission.State.DENIED
 import com.vanniktech.rxpermission.Permission.State.DENIED_NOT_SHOWN
@@ -39,17 +36,17 @@ import io.beerdeddevs.heartbeards.R.string
 import io.beerdeddevs.heartbeards.feature.common.BeardLoading
 import io.beerdeddevs.heartbeards.feature.picture.camera.CameraActivity
 import io.beerdeddevs.heartbeards.feature.timeline.TimelineItem
-import io.beerdeddevs.heartbeards.getColor
 import io.beerdeddevs.heartbeards.getComponent
+import io.beerdeddevs.heartbeards.io.config.Config
 import io.beerdeddevs.heartbeards.plusAssign
 import io.beerdeddevs.heartbeards.setTopDrawable
 import io.beerdeddevs.heartbeards.timelineReference
 import io.reactivex.disposables.CompositeDisposable
-import java.io.File
 import javax.inject.Inject
 
 class BottomSheetChoosePicture : BottomSheetDialogFragment() {
   @Inject internal lateinit var rxPermission: RxPermission
+  @Inject internal lateinit var config: Config
 
   @BindView(R.id.bottomSheetChoosePicture) lateinit var rootView: View
   @BindView(R.id.bottomSheetChoosePictureCamera) lateinit var cameraView: TextView
@@ -156,15 +153,12 @@ class BottomSheetChoosePicture : BottomSheetDialogFragment() {
   }
 
   private fun tintIcons(context: Context) {
-    val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
-    val galleryIconColor = firebaseRemoteConfig.getColor("gallery_icon_color") ?: Color.BLACK
     galleryView.setTopDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_gallery)?.mutate()?.apply {
-      setColorFilter(galleryIconColor, SRC_IN)
+      setColorFilter(config.getGalleryIconColor(), SRC_IN)
     })
 
-    val cameraIconColor = firebaseRemoteConfig.getColor("camera_icon_color") ?: Color.BLACK
     cameraView.setTopDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_camera)?.mutate()?.apply {
-      setColorFilter(cameraIconColor, SRC_IN)
+      setColorFilter(config.getCameraIconColor(), SRC_IN)
     })
   }
 

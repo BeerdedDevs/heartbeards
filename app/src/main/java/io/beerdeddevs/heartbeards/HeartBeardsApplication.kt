@@ -4,29 +4,27 @@ import android.app.Activity
 import android.app.Application
 import android.support.design.widget.BottomSheetDialogFragment
 import android.support.v7.app.AppCompatDelegate
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import io.beerdeddevs.heartbeards.di.component.DaggerApplicationComponent
-import java.util.concurrent.TimeUnit
+import io.beerdeddevs.heartbeards.io.config.Config
+import javax.inject.Inject
 
 class HeartBeardsApplication : Application() {
-    val applicationComponent by lazy {
-        DaggerApplicationComponent.builder()
-            .application(this)
-            .build()
-    }
+  @Inject internal lateinit var config: Config
 
-    override fun onCreate() {
-        super.onCreate()
+  val applicationComponent by lazy {
+    DaggerApplicationComponent.builder()
+        .application(this)
+        .build()
+  }
 
-        val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
-        firebaseRemoteConfig.setConfigSettings(FirebaseRemoteConfigSettings.Builder().setDeveloperModeEnabled(BuildConfig.DEBUG).build())
-        firebaseRemoteConfig.fetch(if (BuildConfig.DEBUG) 1 else TimeUnit.HOURS.toSeconds(12))
-            .addOnSuccessListener { firebaseRemoteConfig.activateFetched() }
-            .addOnFailureListener { /** Do nothing */ }
+  override fun onCreate() {
+    super.onCreate()
 
-        AppCompatDelegate.setDefaultNightMode(firebaseRemoteConfig.getLong("night_mode").toInt())
-    }
+    applicationComponent.inject(this)
+
+    config.fetch()
+    AppCompatDelegate.setDefaultNightMode(config.getNightModeValue())
+  }
 }
 
 fun Activity.getComponent() = (application as HeartBeardsApplication).applicationComponent

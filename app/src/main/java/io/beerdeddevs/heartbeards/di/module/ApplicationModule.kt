@@ -6,6 +6,8 @@ import com.vanniktech.rxpermission.RealRxPermission
 import com.vanniktech.rxpermission.RxPermission
 import dagger.Module
 import dagger.Provides
+import io.beerdeddevs.heartbeards.io.config.Config
+import io.beerdeddevs.heartbeards.io.config.FirebaseConfig
 
 @Module object ApplicationModule {
   @Provides
@@ -15,4 +17,6 @@ import dagger.Provides
   @Provides
   @JvmStatic
   fun provideFirebaseAnalytics(application: Application) = FirebaseAnalytics.getInstance(application)
+
+  @Provides @JvmStatic fun provideConfig(): Config = FirebaseConfig()
 }
