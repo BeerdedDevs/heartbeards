@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+  <!-- Does not work for Kotlin (yet). -->
+  <issue id="UnusedResources" severity="ignore"/>
+
+  <!-- We'll need a newer version of ButterKnife for this. -->
+  <issue id="ObsoleteLintCustomCheck" severity="ignore"/>
+
+  <!-- We don't want this for now. -->
+  <issue id="GoogleAppIndexingWarning" severity="ignore"/>
+</lint>
