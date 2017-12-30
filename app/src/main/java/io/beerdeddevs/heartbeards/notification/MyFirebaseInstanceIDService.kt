@@ -1,9 +1,9 @@
 package io.beerdeddevs.heartbeards.notification
 
 import android.util.Log
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.iid.FirebaseInstanceIdService
 import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.iid.FirebaseInstanceIdService
+import io.beerdeddevs.heartbeards.extension.databaseReference
 
 class MyFirebaseInstanceIDService : FirebaseInstanceIdService() {
 
@@ -19,9 +19,7 @@ class MyFirebaseInstanceIDService : FirebaseInstanceIdService() {
     }
 
     private fun sendRegistrationToServer(refreshedToken: NotificationToken) {
-        FirebaseDatabase.getInstance()
-                .reference
-                .child("notificationTokens/${refreshedToken.token}")
+        databaseReference("notificationTokens/${refreshedToken.token}")
                 .setValue(true)
     }
 

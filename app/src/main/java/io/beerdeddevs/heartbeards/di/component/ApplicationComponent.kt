@@ -12,15 +12,17 @@ import io.beerdeddevs.heartbeards.feature.timeline.TimelineActivity
 @ApplicationScope
 @Component(modules = [ApplicationModule::class])
 interface ApplicationComponent {
-  fun inject(bottomSheet: BottomSheetChoosePicture)
-
-  fun inject(activity: TimelineActivity)
-
-  fun inject(application: HeartBeardsApplication)
 
   @Component.Builder interface Builder {
     @BindsInstance fun application(application: Application): Builder
 
     fun build(): ApplicationComponent
   }
+
+  fun inject(application: HeartBeardsApplication)
+
+  // TODO: Move these into feature specific components
+  fun inject(bottomSheet: BottomSheetChoosePicture)
+  fun inject(activity: TimelineActivity)
+
 }
