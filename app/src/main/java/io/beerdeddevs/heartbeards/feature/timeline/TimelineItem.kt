@@ -6,7 +6,7 @@ class TimelineItem {
     var name: String = ""
     var imageUrl: String = ""
 
-    constructor() // necessary for firebase
+    constructor() // Necessary for firebase // No mi like it
 
     constructor(id: String, timestamp: Long, name: String, imageUrl: String) {
         this.id = id

@@ -23,21 +23,16 @@ import com.google.android.gms.appinvite.AppInviteInvitation
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import io.beerdeddevs.heartbeards.R
+import io.beerdeddevs.heartbeards.extension.applicationComponent
+import io.beerdeddevs.heartbeards.extension.timelineReference
 import io.beerdeddevs.heartbeards.feature.picture.choose.BottomSheetChoosePicture
-import io.beerdeddevs.heartbeards.getComponent
-import io.beerdeddevs.heartbeards.timelineReference
 import javax.inject.Inject
 
-
-const val REQUEST_CODE_SIGN_IN = 111
-const val REQUEST_INVITE = 112
-
 class TimelineActivity : AppCompatActivity() {
-    @BindView(R.id.activityTimeline) internal lateinit var rootView: View
-
-    @Inject internal lateinit var firebaseAnalytics: FirebaseAnalytics
 
     private lateinit var adapter: TimelineAdapter
+    @Inject internal lateinit var firebaseAnalytics: FirebaseAnalytics
+    @BindView(R.id.activityTimeline) internal lateinit var rootView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,16 +40,18 @@ class TimelineActivity : AppCompatActivity() {
         setContentView(R.layout.activity_timeline)
         ButterKnife.bind(this)
 
-        getComponent().inject(this)
+        applicationComponent().inject(this)
 
+        val query = timelineReference.orderByChild("timestamp").limitToLast(50)
         val options = FirebaseRecyclerOptions.Builder<TimelineItem>()
-                .setQuery(timelineReference.orderByChild("timestamp").limitToLast(50), TimelineItem::class.java)
+                .setQuery(query, TimelineItem::class.java)
                 .build()
 
-        adapter = TimelineAdapter(this@TimelineActivity, options)
+        adapter = TimelineAdapter(this, options)
         adapter.setHasStableIds(true)
 
         findViewById<RecyclerView>(R.id.recycler).apply {
+            // TODO: Re-visit this, I don't think we need more than fixedSize
             // Optimizations taken from here - https://stackoverflow.com/a/36919009/1979703
             setHasFixedSize(true)
             setItemViewCacheSize(50)
@@ -97,30 +94,13 @@ class TimelineActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == REQUEST_CODE_SIGN_IN) {
-            val signUpResponse = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
-                showSnackbar(R.string.sign_in_successful)
-                val bundle = Bundle().apply {
-                    putString("STATUS", "completed")
-                }
-                firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SIGN_UP, bundle)
-
-                BottomSheetChoosePicture().show(this@TimelineActivity)
-                invalidateOptionsMenu()
+                onSignInSuccess()
             } else {
-                if (signUpResponse == null) {
-                    // User pressed back button
-                    showSnackbar(R.string.sign_in_cancelled)
-                    return
-                }
-
-                when (signUpResponse.errorCode) {
-                    ErrorCodes.NO_NETWORK -> showSnackbar(R.string.no_internet_connection)
-                    ErrorCodes.UNKNOWN_ERROR -> showSnackbar(R.string.unknown_error)
-                }
+                onSignInFail(data)
             }
         } else if (requestCode == REQUEST_INVITE && resultCode == Activity.RESULT_OK) {
-            // TODO we could do something here but firebase already shows a Snackbar.
+            // TODO: we could do something here but firebase already shows a Snackbar.
         }
     }
 
@@ -136,7 +116,7 @@ class TimelineActivity : AppCompatActivity() {
                 AuthUI.getInstance()
                         .signOut(this)
                         .addOnCompleteListener {
-                            //TOOD: Do something?
+                            // TODO: Do something?
                             item.isVisible = false
                             Log.d("Logout", "User logged out")
                         }
@@ -147,17 +127,48 @@ class TimelineActivity : AppCompatActivity() {
                     .setMessage(getString(R.string.invitation_message))
                     .setAndroidMinimumVersionCode(21)
                     .setDeepLink(Uri.parse(getString(R.string.invitation_deep_link)))
-                    .setCustomImage(Uri.parse("android.resource://io.beerdeddevs.heartbeards/drawable/firebase_invite_image")) // ¯\_(ツ)_/¯
+                    .setCustomImage(Uri.parse(MAGICAL_INVITE_ICON_PATH))
                     .setCallToActionText(getString(R.string.invitation_cta))
                     .build()
                 startActivityForResult(intent, REQUEST_INVITE)
             }
+            else -> return super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
+        return true
     }
 
+    private fun onSignInSuccess() {
+        showSnackbar(R.string.sign_in_successful)
+        val bundle = Bundle().apply {
+            putString("STATUS", "completed")
+        }
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SIGN_UP, bundle)
+
+        BottomSheetChoosePicture().show(this)
+        invalidateOptionsMenu()
+    }
+
+    private fun onSignInFail(data: Intent?) {
+        IdpResponse.fromResultIntent(data)?.let {
+            when (it.errorCode) {
+                ErrorCodes.NO_NETWORK -> showSnackbar(R.string.no_internet_connection)
+                ErrorCodes.UNKNOWN_ERROR -> showSnackbar(R.string.unknown_error)
+            }
+        } ?: run {
+            // User pressed back button
+            showSnackbar(R.string.sign_in_cancelled)
+        }
+    }
 
     private fun showSnackbar(resourceId: Int) {
         Snackbar.make(rootView, resourceId, Snackbar.LENGTH_SHORT).show()
     }
+
+    companion object {
+        private const val REQUEST_CODE_SIGN_IN = 111
+        private const val REQUEST_INVITE = 112
+        private const val MAGICAL_INVITE_ICON_PATH // ¯\_(ツ)_/¯
+                = "android.resource://io.beerdeddevs.heartbeards/drawable/firebase_invite_image"
+    }
+
 }

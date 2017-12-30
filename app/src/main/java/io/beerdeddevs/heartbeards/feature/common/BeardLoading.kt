@@ -4,6 +4,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,3 +19,26 @@ class BeardLoading : DialogFragment() {
     }
 
 }
+
+interface BeardDialogLoading {
+
+    fun displayProgress() {
+        if (!progressDialog.isVisible) {
+            when (this) {
+                is AppCompatActivity -> progressDialog.show(supportFragmentManager, TAG)
+                is Fragment -> progressDialog.show(fragmentManager, TAG)
+            }
+        }
+    }
+
+    fun dismissProgress() {
+        progressDialog.dismiss()
+    }
+
+    companion object {
+        const val TAG = "BeardDialog"
+    }
+
+}
+
+private val BeardDialogLoading.progressDialog: DialogFragment by lazy { BeardLoading() }

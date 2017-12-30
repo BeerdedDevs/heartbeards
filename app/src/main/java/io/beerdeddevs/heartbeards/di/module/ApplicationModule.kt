@@ -10,13 +10,13 @@ import io.beerdeddevs.heartbeards.io.config.Config
 import io.beerdeddevs.heartbeards.io.config.FirebaseConfig
 
 @Module object ApplicationModule {
-  @Provides
-  @JvmStatic
-  fun provideRxPermission(application: Application): RxPermission = RealRxPermission.getInstance(application)
 
-  @Provides
-  @JvmStatic
-  fun provideFirebaseAnalytics(application: Application) = FirebaseAnalytics.getInstance(application)
+  @Provides @JvmStatic fun provideRxPermission(application: Application): RxPermission
+          = RealRxPermission.getInstance(application)
+
+  @Provides @JvmStatic fun provideFirebaseAnalytics(application: Application): FirebaseAnalytics
+          = FirebaseAnalytics.getInstance(application)
 
   @Provides @JvmStatic fun provideConfig(): Config = FirebaseConfig()
+
 }

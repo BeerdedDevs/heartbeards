@@ -5,16 +5,14 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.ACTION_GET_CONTENT
-import android.content.Intent.CATEGORY_OPENABLE
 import android.graphics.PorterDuff.Mode.SRC_IN
-import android.net.Uri.fromParts
+import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.support.annotation.StringRes
 import android.support.design.widget.BottomSheetDialog
 import android.support.design.widget.BottomSheetDialogFragment
 import android.support.design.widget.Snackbar
-import android.support.v4.app.DialogFragment
 import android.support.v4.app.FragmentActivity
 import android.support.v7.content.res.AppCompatResources
 import android.util.Log
@@ -25,6 +23,7 @@ import butterknife.BindView
 import butterknife.OnClick
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
+import com.vanniktech.rxpermission.Permission
 import com.vanniktech.rxpermission.Permission.State.DENIED
 import com.vanniktech.rxpermission.Permission.State.DENIED_NOT_SHOWN
 import com.vanniktech.rxpermission.Permission.State.GRANTED
@@ -32,19 +31,19 @@ import com.vanniktech.rxpermission.Permission.State.REVOKED_BY_POLICY
 import com.vanniktech.rxpermission.RxPermission
 import io.beerdeddevs.heartbeards.BuildConfig
 import io.beerdeddevs.heartbeards.R
-import io.beerdeddevs.heartbeards.R.string
-import io.beerdeddevs.heartbeards.feature.common.BeardLoading
+import io.beerdeddevs.heartbeards.extension.applicationComponent
+import io.beerdeddevs.heartbeards.extension.plusAssign
+import io.beerdeddevs.heartbeards.extension.setTopDrawable
+import io.beerdeddevs.heartbeards.extension.timelineReference
+import io.beerdeddevs.heartbeards.feature.common.BeardDialogLoading
 import io.beerdeddevs.heartbeards.feature.picture.camera.CameraActivity
 import io.beerdeddevs.heartbeards.feature.timeline.TimelineItem
-import io.beerdeddevs.heartbeards.getComponent
 import io.beerdeddevs.heartbeards.io.config.Config
-import io.beerdeddevs.heartbeards.plusAssign
-import io.beerdeddevs.heartbeards.setTopDrawable
-import io.beerdeddevs.heartbeards.timelineReference
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
-class BottomSheetChoosePicture : BottomSheetDialogFragment() {
+class BottomSheetChoosePicture : BottomSheetDialogFragment(), BeardDialogLoading {
+
   @Inject internal lateinit var rxPermission: RxPermission
   @Inject internal lateinit var config: Config
 
@@ -61,7 +60,7 @@ class BottomSheetChoosePicture : BottomSheetDialogFragment() {
     val view = View.inflate(context, R.layout.bottom_sheet_choose_picture, null)
     BottomSheetChoosePicture_ViewBinding(this, view)
 
-    getComponent().inject(this)
+    applicationComponent().inject(this)
 
     dialog.setContentView(view)
 
@@ -70,47 +69,44 @@ class BottomSheetChoosePicture : BottomSheetDialogFragment() {
   }
 
   @OnClick(R.id.bottomSheetChoosePictureGallery) internal fun onGalleryClicked() {
-    startActivityForResult(Intent.createChooser(Intent().apply {
-      type = "image/*"
-      addCategory(CATEGORY_OPENABLE)
-      action = ACTION_GET_CONTENT
-    }, getString(string.gallery_title)), PICK_IMAGE_REQUEST_CODE)
+    val galleryIntent = Intent(Intent.ACTION_GET_CONTENT).apply {
+      addCategory(Intent.CATEGORY_OPENABLE)
+      type = MIME_TYPE_IMAGE
+    }
+    val intentChooser = Intent.createChooser(galleryIntent, getString(R.string.gallery_title))
+    startActivityForResult(intentChooser, PICK_IMAGE_REQUEST_CODE)
   }
 
   @OnClick(R.id.bottomSheetChoosePictureCamera) internal fun onCameraClicked() {
     compositeDisposable += rxPermission.request(CAMERA)
-        .subscribe({
-          val state = it.state()
-          when (state) {
-            GRANTED -> {
-              startActivity(Intent(context, CameraActivity::class.java))
-              dismiss()
-            }
-            DENIED -> Snackbar.make(rootView, R.string.camera_permission_denied, Snackbar.LENGTH_LONG).show()
-            DENIED_NOT_SHOWN -> {
-              Snackbar.make(rootView, R.string.camera_permission_denied_not_shown, Snackbar.LENGTH_LONG)
-                  .setAction(R.string.camera_permission_denied_not_shown_action) {
-                    startActivity(Intent().apply {
-                      action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                      data = fromParts("package", BuildConfig.APPLICATION_ID, null)
-                    })
-                  }
-                  .show()
-            }
-            REVOKED_BY_POLICY -> Snackbar.make(rootView, R.string.camera_permission_revoked_by_policy, Snackbar.LENGTH_LONG).show()
-          }
-        }, { throw it })
+        .subscribe({ permissionResult(it.state()) }, { throw it })
   }
 
-  private val progressDialog: DialogFragment by lazy { BeardLoading() }
-
-  private fun displayProgress() {
-    progressDialog.show(fragmentManager, "BeardDialog")
+  private fun permissionResult(state: Permission.State) {
+    when (state) {
+      GRANTED -> onPermissionGranted()
+      REVOKED_BY_POLICY -> buildSnackbar(R.string.camera_permission_revoked_by_policy).show()
+      DENIED -> buildSnackbar(R.string.camera_permission_denied).show()
+      DENIED_NOT_SHOWN -> {
+        buildSnackbar(R.string.camera_permission_denied_not_shown)
+                .setAction(R.string.camera_permission_denied_not_shown_action, { onSettingsChangeRequired() })
+                .show()
+      }
+    }
   }
 
-  private fun dismissProgress() {
-    progressDialog.dismiss()
+  private fun onPermissionGranted() {
+    startActivity(Intent(context, CameraActivity::class.java))
+    dismiss()
   }
+
+  private fun onSettingsChangeRequired() {
+    startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+      data = Uri.fromParts("package", BuildConfig.APPLICATION_ID, null)
+    })
+  }
+
+  private fun buildSnackbar(@StringRes messageId: Int) = Snackbar.make(rootView, messageId, Snackbar.LENGTH_LONG)
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
     if (requestCode == PICK_IMAGE_REQUEST_CODE && intent != null && resultCode == Activity.RESULT_OK) {
@@ -130,16 +126,14 @@ class BottomSheetChoosePicture : BottomSheetDialogFragment() {
                   taskSnapshot.downloadUrl.toString())
               pushItem.setValue(insertedItem)
 
-              Log.d("Image Upload", "Upload successfull")
+              Log.d("Image Upload", "Upload successful")
               dismiss()
             })
             .addOnFailureListener({
               dismiss()
               Toast.makeText(context, R.string.upload_failed, Toast.LENGTH_SHORT).show()
             })
-            .addOnCompleteListener({
-              dismissProgress()
-            })
+            .addOnCompleteListener({ dismissProgress() })
     }
   }
 
@@ -165,5 +159,6 @@ class BottomSheetChoosePicture : BottomSheetDialogFragment() {
   companion object {
     private const val TAG = "BottomSheetAvatar"
     private const val PICK_IMAGE_REQUEST_CODE = 51324
+    private const val MIME_TYPE_IMAGE = "image/*"
   }
 }
