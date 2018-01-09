@@ -1,9 +1,11 @@
 apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'com.vanniktech.android.junit.jacoco'
 
 buildscript {
-  ext.kotlin_version = '1.2.0'
+  ext.kotlin_version = '1.2.10'
   ext.supportLibraryVersion = '27.0.2'
   ext.firebaseVersion = '11.6.2'
+  ext.daggerVersion = '2.14.1'
 
   repositories {
     google()
@@ -12,6 +14,7 @@ buildscript {
   dependencies {
     classpath 'com.android.tools.build:gradle:3.0.1'
     classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
+    classpath 'com.vanniktech:gradle-android-junit-jacoco-plugin:0.11.0'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     classpath 'com.google.gms:google-services:3.1.2'
   }
@@ -33,6 +36,6 @@ subprojects {
 }
 
 task wrapper(type: Wrapper) {
-  gradleVersion = '4.3.1'
+  gradleVersion = '4.4.1'
   distributionType = Wrapper.DistributionType.ALL
 }
